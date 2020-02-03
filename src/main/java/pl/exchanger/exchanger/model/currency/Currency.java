@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -31,11 +33,16 @@ public class Currency {
 
     private double course;
 
+    private LocalDateTime downloadDate;
+
 
      public void downloadCourse() {
-        String url = "http://api.nbp.pl/api/exchangerates/rates/a/" + currency;
+
+         String url = "http://api.nbp.pl/api/exchangerates/rates/a/" + currency;
         double course = 0;
+
         try {
+
             URL sellLink = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) sellLink.openConnection();
             System.out.println(connection.getResponseCode());
@@ -58,6 +65,9 @@ public class Currency {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        this.downloadDate = LocalDateTime.now();
+
         this.course=course;
     }
 

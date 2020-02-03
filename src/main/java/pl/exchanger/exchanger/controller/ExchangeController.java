@@ -2,8 +2,9 @@ package pl.exchanger.exchanger.controller;
 
 
 import org.springframework.web.bind.annotation.*;
+import pl.exchanger.exchanger.dto.ExchangeDto;
 import pl.exchanger.exchanger.model.currency.CurrencyExchanger;
-import pl.exchanger.exchanger.dto.CurrencyType;
+import pl.exchanger.exchanger.model.currency.CurrencyType;
 import pl.exchanger.exchanger.model.currency.ExchangeRequest;
 
 import java.util.Arrays;
@@ -16,7 +17,6 @@ import java.util.Map;
 public class ExchangeController {
 
 
-
     @GetMapping("list")
     public List<CurrencyType> getList() {
         return Arrays.asList(CurrencyType.values());
@@ -25,21 +25,31 @@ public class ExchangeController {
 
     @PostMapping("exchange")
     public CurrencyExchanger exchangeCurrency(@RequestBody ExchangeRequest request) {
+
         CurrencyExchanger exchanger = new CurrencyExchanger();
+
         exchanger.setAmount(request.getAmount());
         exchanger.setBuyCurrency(request.getBuy());
         exchanger.setSellCurrency(request.getSell());
         exchanger.exchange();
+
         return exchanger;
     }
 
     @PostMapping("courselist")
     public Map<CurrencyType, Double> getCourseList(@RequestBody CurrencyType[] list) {
+
         Map<CurrencyType, Double> coursesMap = new LinkedHashMap<>();
         CurrencyExchanger exchanger = new CurrencyExchanger();
+
         for (CurrencyType currency : list) {
             if (!currency.equals(CurrencyType.PLN)) {
-                coursesMap.put(currency, exchanger.downloadCourse(currency));
+
+                ExchangeDto exchangeDto = new ExchangeDto();
+                exchangeDto.map
+                //MapExchangeDPO HERE
+
+
             } else {
                 coursesMap.put(currency, 1.00);
             }
