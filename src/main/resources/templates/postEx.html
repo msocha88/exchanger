@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>You get</title>
+    <link rel="stylesheet" href="sub.css">
+
+</head>
+<body>
+
+<p>Możesz zamienić:</p>
+<p th:text="|${exchanger.amount} ${exchanger.sell.currency} na:|"></p>
+<p th:text="|${exchanger.payment} ${exchanger.buy.currency}|"></p>
+<p th:text="|po kursie ${exchanger.ratio}|"></p>
+
+
+<p><a href="/exchanger">Przelicz kolejną</a> </p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instrukcja Api</title>
+</head>
+<body>
+<h1>Instukcja Api</h1>
+
+<ul>
+    <li><h2>Pobranie listy dostępnych walut:</h2>
+        <h4>Aby pobrac listę dostępnych walut wyślij żądanie <code>GET</code> na adres
+            <code>http://miscoc.herokuapp.com/api/list</code></htt></h4>
+    </li>
+    <li><h2>Przeliczenie jednej waluty na inną</h2>
+        <h4>Aby przeliczyć walutę wyślij metodą <code>POST</code> żądanie w formacie:<br><br>
+            {"amount":[ilość],<br>
+            "sell":[waluta sprzedawana]}<br>
+            "buy":[waluta kupowana],<br><br>
+            np.
+            { "amount":"100",
+            "sell":"GBP",
+            "buy":"EUR"
+            }<br><br>
+            na adres <code>micsoc.herokuapp.com/api/exchange</code>
+        </h4>
+    </li>
+    <li>
+        <h2>Porbanie aktualnych kursów dla listy walut</h2>
+        <h4>Aby pobrać aktualne kursy walut wyślij tablicę walut metodą <code>POST</code> na adres<br>
+          <code>http://micsoc.herokuapp.com/api/courselist</code>
+
+        </h4>
+
+    </li>
+</ul>
+</body>
+</html>
