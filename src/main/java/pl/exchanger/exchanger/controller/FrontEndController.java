@@ -25,7 +25,7 @@ public class FrontEndController {
 
     @PostMapping("/exchanger")
     String postEx(@ModelAttribute CurrencyExchanger exchanger, ModelMap map) {
-        exchanger.exchange();
+//        exchanger.exchange();
         map.put("exchanger",exchanger);
         System.out.println(exchanger.getAmount());
         System.out.println(exchanger.getExchangeRatio());

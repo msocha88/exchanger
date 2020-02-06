@@ -1,56 +1,58 @@
 package pl.exchanger.exchanger.model.currency;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+
+@Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
-@AllArgsConstructor
-@Table(name = "exchanges")
 public class CurrencyExchanger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    Currency sell = new Currency();
-    Currency buy = new Currency();
-
     double amount;
     double exchangeRatio;
     double payment;
 
-    public void exchange() {
+    @OneToMany(mappedBy = "exchanger", cascade = CascadeType.ALL)
+    private List<Currency> currencies = new ArrayList<>();
 
-        if (!sell.getCurrency().equals(CurrencyType.PLN)) {
-            sell. downloadCourse();
-        } else {
-            sell.setCourse(1.0);
+    public void exchange(ExchangeRequest request) {
+
+        Currency sell = new Currency();
+        sell.setCurrencyType(request.getSell());
+        sell.setExchanger(this);
+
+        Currency buy = new Currency();
+        buy.setCurrencyType(request.getBuy());
+        buy.setExchanger(this);
+
+        currencies.add(sell);
+        currencies.add(buy);
+
+        for (Currency currency : currencies) {
+
+            if (currency.getCurrencyType().equals(CurrencyType.PLN)) {
+                currency.setCourse(1.0);
+            } else {
+                currency.downloadCourse();
+            }
         }
 
-        if (!buy.getCurrency().equals(CurrencyType.PLN)) {
-            buy.downloadCourse();
-
-        } else {
-            buy.setCourse(1.0);
-        }
-
-        exchangeRatio = Math.round((sell.getCourse() / buy.getCourse()) * 1000) / 1000.0;
+        amount = request.getAmount();
+        exchangeRatio = Math.round((currencies.get(0).getCourse() / currencies.get(1).getCourse()) * 1000) / 1000.0;
         payment = Math.round((amount * exchangeRatio) * 100) / 100.0;
-
-
     }
-
-
 
     public double getAmount() {
         return amount;
@@ -62,22 +64,6 @@ public class CurrencyExchanger {
 
     public double getPayment() {
         return payment;
-    }
-
-    public void setSell(Currency sell) {
-        this.sell = sell;
-    }
-
-    public void setSellCurrency(CurrencyType sell) {
-        this.sell.setCurrency(sell);
-    }
-
-    public void setBuy(Currency buy) {
-        this.buy = buy;
-    }
-
-    public void setBuyCurrency(CurrencyType buy) {
-        this.buy.setCurrency(buy);
     }
 
     public void setAmount(double amount) {

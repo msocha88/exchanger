@@ -1,21 +1,25 @@
 package pl.exchanger.exchanger.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.exchanger.exchanger.dto.ExchangeDto;
+import pl.exchanger.exchanger.dto.mapping.ExchangeMapper;
+import pl.exchanger.exchanger.model.currency.Currency;
 import pl.exchanger.exchanger.model.currency.CurrencyExchanger;
 import pl.exchanger.exchanger.model.currency.CurrencyType;
 import pl.exchanger.exchanger.model.currency.ExchangeRequest;
+import pl.exchanger.exchanger.repository.ExchangeRepository;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequestMapping("/api/")
 @RestController
 public class ExchangeController {
 
+    @Autowired
+    ExchangeMapper exchangeMaper;
+    @Autowired
+    ExchangeRepository exchangeRepository;
 
     @GetMapping("list")
     public List<CurrencyType> getList() {
@@ -26,32 +30,28 @@ public class ExchangeController {
     @PostMapping("exchange")
     public CurrencyExchanger exchangeCurrency(@RequestBody ExchangeRequest request) {
 
-        CurrencyExchanger exchanger = new CurrencyExchanger();
+        CurrencyExchanger exchanger = exchangeMaper.mapToExchangeDto(request);
 
-        exchanger.setAmount(request.getAmount());
-        exchanger.setBuyCurrency(request.getBuy());
-        exchanger.setSellCurrency(request.getSell());
-        exchanger.exchange();
+        exchangeRepository.save(exchanger);
 
         return exchanger;
+
     }
 
     @PostMapping("courselist")
     public Map<CurrencyType, Double> getCourseList(@RequestBody CurrencyType[] list) {
 
         Map<CurrencyType, Double> coursesMap = new LinkedHashMap<>();
-        CurrencyExchanger exchanger = new CurrencyExchanger();
 
-        for (CurrencyType currency : list) {
-            if (!currency.equals(CurrencyType.PLN)) {
+        for (CurrencyType currencyType : list) {
 
-                ExchangeDto exchangeDto = new ExchangeDto();
-                exchangeDto.map
-                //MapExchangeDPO HERE
-
-
+            if (!currencyType.equals(CurrencyType.PLN)) {
+                Currency currency = new Currency();
+                currency.setCurrencyType(currencyType);
+                currency.downloadCourse();
+                coursesMap.put(currency.getCurrencyType(), currency.getCourse());
             } else {
-                coursesMap.put(currency, 1.00);
+                coursesMap.put(currencyType, 1.00);
             }
         }
         return coursesMap;
