@@ -4,10 +4,9 @@ package pl.exchanger.exchanger.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.exchanger.exchanger.dto.mapping.ExchangeMapper;
-import pl.exchanger.exchanger.model.currency.Currency;
-import pl.exchanger.exchanger.model.currency.CurrencyExchanger;
-import pl.exchanger.exchanger.model.currency.CurrencyType;
-import pl.exchanger.exchanger.model.currency.ExchangeRequest;
+import pl.exchanger.exchanger.dto.mapping.ListMapper;
+import pl.exchanger.exchanger.model.currency.*;
+import pl.exchanger.exchanger.repository.CurrencyListRepository;
 import pl.exchanger.exchanger.repository.ExchangeRepository;
 
 import java.util.*;
@@ -17,7 +16,14 @@ import java.util.*;
 public class ExchangeController {
 
     @Autowired
-    ExchangeMapper exchangeMaper;
+    ListMapper listMapper;
+
+    @Autowired
+    CurrencyListRepository currencyListRepository;
+
+    @Autowired
+    ExchangeMapper exchangeMapper;
+
     @Autowired
     ExchangeRepository exchangeRepository;
 
@@ -30,7 +36,7 @@ public class ExchangeController {
     @PostMapping("exchange")
     public CurrencyExchanger exchangeCurrency(@RequestBody ExchangeRequest request) {
 
-        CurrencyExchanger exchanger = exchangeMaper.mapToExchangeDto(request);
+        CurrencyExchanger exchanger = exchangeMapper.mapToExchangeDto(request);
 
         exchangeRepository.save(exchanger);
 
@@ -39,21 +45,12 @@ public class ExchangeController {
     }
 
     @PostMapping("courselist")
-    public Map<CurrencyType, Double> getCourseList(@RequestBody CurrencyType[] list) {
+    public CurrencyList getCourseList(@RequestBody List<CurrencyType> list) {
 
-        Map<CurrencyType, Double> coursesMap = new LinkedHashMap<>();
+        CurrencyList outputList = listMapper.maptToListDto(list);
 
-        for (CurrencyType currencyType : list) {
+        currencyListRepository.save(outputList);
 
-            if (!currencyType.equals(CurrencyType.PLN)) {
-                Currency currency = new Currency();
-                currency.setCurrencyType(currencyType);
-                currency.downloadCourse();
-                coursesMap.put(currency.getCurrencyType(), currency.getCourse());
-            } else {
-                coursesMap.put(currencyType, 1.00);
-            }
-        }
-        return coursesMap;
+        return outputList;
     }
 }

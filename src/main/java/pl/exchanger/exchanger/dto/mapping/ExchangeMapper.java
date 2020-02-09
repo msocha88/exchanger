@@ -26,22 +26,10 @@ public class ExchangeMapper {
 
         ExchangeDto exchangeDto = new ExchangeDto();
         exchangeRequest.setDateOfQuotation(new Date());
-
-//        Currency buy = new Currency();
-//        Currency sell = new Currency();
-//
-//
-//        buy.setCurrencyType(exchangeRequest.getBuy());
-//        buy.downloadCourse();
-//
-//        sell.setCurrencyType(exchangeRequest.getSell());
-//        sell.downloadCourse();
-
         CurrencyExchanger exchanger = new CurrencyExchanger();
+
         exchanger.exchange(exchangeRequest);
         exchangeDto.setExchanger(exchanger);
-
-
 
         return exchangeDto.getExchanger();
     }

@@ -26,6 +26,7 @@ public class Currency {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     Long id;
 
     private CurrencyType currencyType;
@@ -39,6 +40,11 @@ public class Currency {
     @ManyToOne
     private CurrencyExchanger exchanger;
 
+    @JsonIgnore
+    @JoinColumn
+    @ManyToOne
+    private CurrencyList list;
+
     public Currency(CurrencyType currencyType) {
         this.currencyType = currencyType;
     }
@@ -46,8 +52,6 @@ public class Currency {
     public void downloadCourse() {
 
         this.downloadDate = new Date();
-
-//        double course = 0;
 
         if (currencyType.equals(CurrencyType.PLN)) {
             this.course = 1.0;
