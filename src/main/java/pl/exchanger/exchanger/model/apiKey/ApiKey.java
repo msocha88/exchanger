@@ -1,4 +1,4 @@
-package pl.exchanger.exchanger.model.currency.apiKey;
+package pl.exchanger.exchanger.model.apiKey;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ public class ApiKey {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int length =(int) Math.random();
+    private int length;
 
     private String keyString;
 

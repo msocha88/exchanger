@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.exchanger.exchanger.dto.mapping.ExchangeMapper;
 import pl.exchanger.exchanger.dto.mapping.ListMapper;
 import pl.exchanger.exchanger.model.currency.*;
-import pl.exchanger.exchanger.model.currency.Currency;
-import pl.exchanger.exchanger.model.currency.apiKey.ApiKey;
+import pl.exchanger.exchanger.model.apiKey.ApiKey;
 import pl.exchanger.exchanger.repository.CurrencyListRepository;
 import pl.exchanger.exchanger.repository.ExchangeRepository;
 import pl.exchanger.exchanger.repository.ApiKeyRepository;
@@ -33,7 +32,22 @@ public class ExchangeController {
     @Autowired
     ApiKeyRepository keyListRepository;
 
+    @GetMapping("apiKeys")
+    public List<ApiKey> getApiList(){
+
+        Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
+
+        List<ApiKey> apiKeys = new ArrayList<>();
+
+        for (ApiKey apiKey : apiKeyAll) {
+            apiKeys.add(apiKey);
+        }
+
+        return apiKeys;
+    }
+
     @GetMapping("list")
+
     public List<CurrencyType> getList(@RequestParam String apiKey) {
 
         Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
