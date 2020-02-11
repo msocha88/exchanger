@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.exchanger.exchanger.dto.mapping.ExchangeMapper;
 import pl.exchanger.exchanger.dto.mapping.ListMapper;
 import pl.exchanger.exchanger.model.currency.*;
+import pl.exchanger.exchanger.model.currency.Currency;
+import pl.exchanger.exchanger.model.currency.apiKey.ApiKey;
 import pl.exchanger.exchanger.repository.CurrencyListRepository;
 import pl.exchanger.exchanger.repository.ExchangeRepository;
+import pl.exchanger.exchanger.repository.ApiKeyRepository;
 
 import java.util.*;
 
@@ -27,30 +30,58 @@ public class ExchangeController {
     @Autowired
     ExchangeRepository exchangeRepository;
 
+    @Autowired
+    ApiKeyRepository keyListRepository;
+
     @GetMapping("list")
-    public List<CurrencyType> getList() {
-        return Arrays.asList(CurrencyType.values());
+    public List<CurrencyType> getList(@RequestParam String apiKey) {
+
+        Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
+
+        for (ApiKey key : apiKeyAll) {
+
+            if (key.getKeyString().equals(apiKey)) {
+
+                return Arrays.asList(CurrencyType.values());
+            }
+        }
+
+        return null;
     }
 
-
     @PostMapping("exchange")
-    public CurrencyExchanger exchangeCurrency(@RequestBody ExchangeRequest request) {
+    public CurrencyExchanger exchangeCurrency(@RequestBody ExchangeRequest request, @RequestParam String apiKey) {
 
-        CurrencyExchanger exchanger = exchangeMapper.mapToExchangeDto(request);
+        Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
 
-        exchangeRepository.save(exchanger);
+        for (ApiKey key : apiKeyAll) {
+            if (key.getKeyString().equals(apiKey)) {
 
-        return exchanger;
+                CurrencyExchanger exchanger = exchangeMapper.mapToExchangeDto(request);
 
+                exchangeRepository.save(exchanger);
+
+                return exchanger;
+            }
+        }
+        return null;
     }
 
     @PostMapping("courselist")
-    public CurrencyList getCourseList(@RequestBody List<CurrencyType> list) {
+    public CurrencyList getCourseList(@RequestBody List<CurrencyType> list, @RequestParam String apiKey) {
 
-        CurrencyList outputList = listMapper.maptToListDto(list);
+        Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
 
-        currencyListRepository.save(outputList);
+        for (ApiKey key : apiKeyAll) {
 
-        return outputList;
+            if (key.getKeyString().equals(apiKey)) {
+
+                CurrencyList outputList = listMapper.maptToListDto(list);
+                currencyListRepository.save(outputList);
+
+                return outputList;
+            }
+        }
+        return null;
     }
 }
