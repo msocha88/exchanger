@@ -48,7 +48,7 @@ public class ExchangeController {
 
     @GetMapping("list")
 
-    public List<CurrencyType> getList(@RequestParam String apiKey) {
+    public List<CurrencyType> getAvailableCurrencyList(@RequestParam String apiKey) {
 
         Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
 
@@ -82,7 +82,7 @@ public class ExchangeController {
     }
 
     @PostMapping("courselist")
-    public CurrencyList getCourseList(@RequestBody List<CurrencyType> list, @RequestParam String apiKey) {
+    public CurrencyList printCourses(@RequestBody List<CurrencyType> list, @RequestParam String apiKey) {
 
         Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
 

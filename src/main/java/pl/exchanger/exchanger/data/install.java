@@ -7,7 +7,7 @@ import pl.exchanger.exchanger.model.apiKey.ApiKey;
 import pl.exchanger.exchanger.repository.ApiKeyRepository;
 
 @Component
-public class installator implements CommandLineRunner {
+public class install implements CommandLineRunner {
 
     @Autowired
     ApiKeyRepository apiKeyRepository;

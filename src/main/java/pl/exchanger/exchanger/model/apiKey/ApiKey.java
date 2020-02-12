@@ -19,17 +19,21 @@ public class ApiKey {
 
     private String keyString;
 
+    public ApiKey(String keyString) {
+        this.keyString = keyString;
+    }
+
+    private final String allChars
+            = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public void generateKey() {
-        final String ANString
-                = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         StringBuilder key = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
             Random random = new Random();
-            int character = random.nextInt(+ANString.length());
-            key.append(ANString.charAt(character));
+            int character = random.nextInt(+allChars.length());
+            key.append(allChars.charAt(character));
         }
 
         keyString = key.toString();
