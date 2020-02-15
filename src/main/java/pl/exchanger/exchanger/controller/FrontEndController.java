@@ -16,25 +16,9 @@ public class FrontEndController {
                 return "index";
     }
 
-
-    @GetMapping("/exchanger")
-    String exchanger(ModelMap map) {
-       map.put("exchanger", new CurrencyExchanger());
-        return "exchanger";
-    }
-
-    @PostMapping("/exchanger")
-    String postEx(@ModelAttribute("exchanger") CurrencyExchanger exchanger, ModelMap map) {
-//        exchanger.exchange();
-        map.put("exchanger",exchanger);
-        System.out.println(exchanger.getAmount());
-        System.out.println(exchanger.getExchangeRatio());
-        System.out.println(exchanger.getPayment());
-        return "postEx";
-    }
-
     @GetMapping("/apiInstructions")
     String getApiInstructions(){
         return "apiInstructions";
     }
+
 }

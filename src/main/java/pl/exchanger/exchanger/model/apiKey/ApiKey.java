@@ -1,5 +1,6 @@
 package pl.exchanger.exchanger.model.apiKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ public class ApiKey {
         this.keyString = keyString;
     }
 
+    @JsonIgnore
     private final String allChars
             = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 

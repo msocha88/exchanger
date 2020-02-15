@@ -2,6 +2,8 @@ package pl.exchanger.exchanger.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.exchanger.exchanger.dto.mapping.ExchangeMapper;
 import pl.exchanger.exchanger.dto.mapping.ListMapper;
@@ -33,7 +35,7 @@ public class ExchangeController {
     ApiKeyRepository keyListRepository;
 
     @GetMapping("apiKeys")
-    public List<ApiKey> getApiList(){
+    public List<ApiKey> getApiList() {
 
         Iterable<ApiKey> apiKeyAll = keyListRepository.findAll();
 
