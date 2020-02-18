@@ -16,34 +16,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 
-@Entity
+
 @Data
 @NoArgsConstructor
-
 public class Currency {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    Long id;
+
 
     private CurrencyType currencyType;
 
     private double course;
-
-    private Date downloadDate;
-
-    @JsonIgnore
-    @JoinColumn
-    @ManyToOne
-    private CurrencyExchanger exchanger;
-
-    @JsonIgnore
-    @JoinColumn
-    @ManyToOne
-    private CurrencyList list;
 
     public Currency(CurrencyType currencyType) {
         this.currencyType = currencyType;
@@ -51,7 +34,6 @@ public class Currency {
 
     public void downloadCourse() {
 
-        this.downloadDate = new Date();
 
         if (currencyType.equals(CurrencyType.PLN)) {
             this.course = 1.0;

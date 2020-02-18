@@ -15,6 +15,5 @@ public class ExchangeRequest {
     CurrencyType sell;
     CurrencyType buy;
     double amount;
-    private Date dateOfQuotation;
 
 }

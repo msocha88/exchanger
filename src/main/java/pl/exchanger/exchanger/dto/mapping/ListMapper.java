@@ -3,7 +3,6 @@ package pl.exchanger.exchanger.dto.mapping;
 import org.springframework.stereotype.Component;
 import pl.exchanger.exchanger.dto.ListDto;
 import pl.exchanger.exchanger.model.currency.Currency;
-import pl.exchanger.exchanger.model.currency.CurrencyList;
 import pl.exchanger.exchanger.model.currency.CurrencyType;
 
 
@@ -13,7 +12,7 @@ public class ListMapper {
 
 
 
-    public CurrencyList maptToListDto(List<CurrencyType> currencyTypeList) {
+    public List<Currency> maptToListDto(List<CurrencyType> currencyTypeList) {
 
         ListDto listDto = new ListDto();
 
@@ -22,7 +21,7 @@ public class ListMapper {
             Currency currency = new Currency();
             currency.setCurrencyType(currencyType);
             currency.downloadCourse();
-            listDto.getCurrencyList().addCurrency(currency);
+            listDto.getCurrencyList().add(currency);
         }
         return listDto.getCurrencyList();
 

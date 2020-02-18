@@ -3,8 +3,10 @@ package pl.exchanger.exchanger.model.apiKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.exchanger.exchanger.model.logs.Log;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -16,17 +18,18 @@ public class ApiKey {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
     private int length;
 
     private String keyString;
 
-    public ApiKey(String keyString) {
-        this.keyString = keyString;
-    }
-
+    @Transient
     @JsonIgnore
     private final String allChars
             = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    @OneToMany(mappedBy = "usedApi")
+    private List<Log> logList;
 
     public void generateKey() {
 
@@ -40,5 +43,4 @@ public class ApiKey {
 
         keyString = key.toString();
     }
-
 }

@@ -7,7 +7,6 @@ import pl.exchanger.exchanger.dto.ExchangeDto;
 import pl.exchanger.exchanger.model.currency.CurrencyExchanger;
 import pl.exchanger.exchanger.model.currency.ExchangeRequest;
 
-import java.util.Date;
 
 @Component
 @Data
@@ -15,14 +14,27 @@ import java.util.Date;
 public class ExchangeMapper {
 
 
-
     public CurrencyExchanger mapToExchangeDto(ExchangeRequest exchangeRequest) {
 
         ExchangeDto exchangeDto = new ExchangeDto();
-        exchangeRequest.setDateOfQuotation(new Date());
+
         CurrencyExchanger exchanger = new CurrencyExchanger();
 
-        exchanger.exchange(exchangeRequest);
+        exchanger.getSell().setCurrencyType(exchangeRequest.getSell());
+        exchanger.getSell().downloadCourse();
+
+        exchanger.getBuy().setCurrencyType(exchangeRequest.getBuy());
+        exchanger.getBuy().downloadCourse();
+
+
+        exchanger.setAmount(exchangeRequest.getAmount());
+
+        exchanger.setExchangeRatio(Math.round(
+                (exchanger.getSell().getCourse() / exchanger.getBuy().getCourse()) * 1000) / 1000.0);
+
+
+        exchanger.setPayment(Math.round((exchanger.getAmount() * exchanger.getExchangeRatio()) * 100) / 100.0);
+
         exchangeDto.setExchanger(exchanger);
 
         return exchangeDto.getExchanger();
@@ -30,3 +42,4 @@ public class ExchangeMapper {
 
 
 }
+
