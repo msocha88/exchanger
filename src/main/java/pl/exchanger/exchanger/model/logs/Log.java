@@ -7,6 +7,8 @@ import pl.exchanger.exchanger.model.apiKey.ApiKey;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 
 @Entity
@@ -22,6 +24,8 @@ public class Log {
 
     private Date date;
 
+    private Time time;
+
     private String quotation;
 
     private String body;
@@ -34,13 +38,15 @@ public class Log {
 
     public void insertValues(String method, String quotation, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
+        this.time = new Time(System.currentTimeMillis());
         this.method = method;
         this.quotation = quotation;
         this.httpStatus = httpStatus;
     }
 
-    public void insertValues(String method, String quotation, ApiKey usedApi,HttpStatus httpStatus) {
+    public void insertValues(String method, String quotation, ApiKey usedApi, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
+        this.time = new Time(System.currentTimeMillis());
         this.method = method;
         this.quotation = quotation;
         this.usedApi = usedApi;
@@ -49,10 +55,11 @@ public class Log {
 
     public void insertValues(String method, String quotation, ApiKey usedApi, String body, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
+        this.time = new Time(System.currentTimeMillis());
         this.method = method;
         this.quotation = quotation;
         this.usedApi = usedApi;
-        this.httpStatus =httpStatus;
+        this.httpStatus = httpStatus;
     }
 
 }
