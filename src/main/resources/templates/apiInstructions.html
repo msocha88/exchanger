@@ -16,7 +16,7 @@
 
     <li><h2>Pobranie listy dostępnych walut:</h2>
         <h4>Aby pobrac listę dostępnych walut wyślij żądanie <code>GET</code> z parametrem <code>apiKey=</code>na adres
-            <a href="http://miscoc.herokuapp.com/api/list?apiKey=">http://miscoc.herokuapp.com/api/list</a></h4>
+            <a href="/api/list?apiKey=">http://localhost:8080.com/api/list?apiKey=</a></h4>
     </li>
     <li><h2>Przeliczenie jednej waluty na inną</h2>
         <h4>Aby przeliczyć walutę wyślij metodą <code>POST</code> żądanie w formacie:<br><br>
@@ -28,14 +28,13 @@
             "sell":"GBP",
             "buy":"EUR"
             }<br><br>
-            na adres <code>micsoc.herokuapp.com/api/exchange</code>
+            na adres <code>http://localhost:8080/api/exchange</code>
         </h4>
     </li>
     <li>
         <h2>Porbanie aktualnych kursów dla listy walut</h2>
         <h4>Aby pobrać aktualne kursy walut wyślij tablicę walut metodą <code>POST</code> na adres<br>
-          <code>http://micsoc.herokuapp.com/api/courselist</code>
-
+          <code>http://localhost:8080/api/courselist?apiKey=</code> z parametrem <code>apiKey=</code>
         </h4>
 
     </li>
