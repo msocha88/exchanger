@@ -1,11 +1,10 @@
 package pl.exchanger.exchanger.controller;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.exchanger.exchanger.dto.mapping.ExchangeMapper;
 import pl.exchanger.exchanger.dto.mapping.ListMapper;
+import pl.exchanger.exchanger.exceptions.WrongApiKeyException;
 import pl.exchanger.exchanger.model.apiKey.ApiKey;
 import pl.exchanger.exchanger.model.currency.Currency;
 import pl.exchanger.exchanger.model.currency.CurrencyExchanger;
@@ -28,107 +28,129 @@ import pl.exchanger.exchanger.repository.LogRepository;
 public class ExchangeController {
     @Autowired
     ListMapper listMapper;
+
     @Autowired
     ApiKeyRepository apiKeyRepository;
+
     @Autowired
     ExchangeMapper exchangeMapper;
+
     @Autowired
     ApiKeyRepository keyListRepository;
+
     @Autowired
     LogRepository logRepository;
 
-    public ExchangeController() {
-    }
 
-    @GetMapping({"apiKeys"})
+    @GetMapping("/apiKeys")
     public List<ApiKey> getApiKeyList() {
-        Iterable<ApiKey> apiKeyAll = this.keyListRepository.findAll();
-        List<ApiKey> apiKeys = new ArrayList();
-        Iterator var3 = apiKeyAll.iterator();
-
-        while(var3.hasNext()) {
-            ApiKey apiKey = (ApiKey)var3.next();
-            apiKeys.add(apiKey);
-        }
 
         Log log = new Log();
-        log.setDate(new Date(System.currentTimeMillis()));
-        log.setMethod("GET");
-        log.setQuotation("Get API Keys List");
+
+        log.insertValues(
+                "GET",
+                "Get API key list",
+                HttpStatus.OK);
         this.logRepository.save(log);
-        return apiKeys;
+
+        return keyListRepository.findAll();
     }
 
-    @GetMapping({"list"})
+    @GetMapping("/list")
     public List<CurrencyType> getAvailableCurrencyList(@RequestParam String apiKey) {
-        Iterable<ApiKey> apiKeyAll = this.keyListRepository.findAll();
-        Iterator var3 = apiKeyAll.iterator();
 
-        ApiKey key;
-        do {
-            if (!var3.hasNext()) {
-                return null;
-            }
 
-            key = (ApiKey)var3.next();
-        } while(!key.getKeyString().equals(apiKey));
+        if (keyListRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
-        Log log = new Log();
-        log.setDate(new Date(System.currentTimeMillis()));
-        log.setMethod("GET");
-        log.setQuotation("Get available currencyList");
-        log.setUsedApi(this.apiKeyRepository.findByKeyString(apiKey));
-        this.logRepository.save(log);
-        return Arrays.asList(CurrencyType.values());
+            Log log = new Log();
+
+            log.insertValues(
+                    "GET",
+                    "Get available currencyList",
+                    apiKeyRepository.findByKeyString(apiKey),
+                    HttpStatus.OK);
+
+            this.logRepository.save(log);
+
+            return Arrays.asList(CurrencyType.values());
+
+        } else {
+
+            Log log = new Log();
+            log.insertValues(
+                    "GET",
+                    "Get available currencyList",
+                    HttpStatus.UNAUTHORIZED);
+
+            this.logRepository.save(log);
+
+            throw new WrongApiKeyException(apiKey);
+        }
     }
 
-    @PostMapping({"exchange"})
+    @PostMapping("/exchange")
     public CurrencyExchanger exchangeCurrency(@RequestBody ExchangeRequest request, @RequestParam String apiKey) {
-        Iterable<ApiKey> apiKeyAll = this.keyListRepository.findAll();
-        Iterator var4 = apiKeyAll.iterator();
 
-        ApiKey key;
-        do {
-            if (!var4.hasNext()) {
-                return null;
-            }
+        if (keyListRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
-            key = (ApiKey)var4.next();
-        } while(!key.getKeyString().equals(apiKey));
+            CurrencyExchanger exchanger = exchangeMapper.mapToExchangeDto(request);
 
-        CurrencyExchanger exchanger = this.exchangeMapper.mapToExchangeDto(request);
-        Log log = new Log();
-        log.setDate(new Date(System.currentTimeMillis()));
-        log.setMethod("POST");
-        log.setQuotation("Exchange currency");
-        log.setUsedApi(this.apiKeyRepository.findByKeyString(apiKey));
-        log.setBody(request.toString());
-        this.logRepository.save(log);
-        return exchanger;
+            Log log = new Log();
+
+            log.insertValues(
+
+                    "POST",
+                    "Exchange currency",
+                    apiKeyRepository.findByKeyString(apiKey),
+                    request.toString(),
+                    HttpStatus.OK);
+
+            logRepository.save(log);
+
+            return exchanger;
+
+        } else {
+
+            Log log = new Log();
+            log.insertValues(
+                    "GET",
+                    "Exchange currency",
+                    HttpStatus.UNAUTHORIZED);
+
+            this.logRepository.save(log);
+
+            throw new WrongApiKeyException(apiKey);
+        }
     }
 
-    @PostMapping({"courselist"})
+    @PostMapping("/courselist")
     public List<Currency> printCourses(@RequestBody List<CurrencyType> list, @RequestParam String apiKey) {
-        Iterable<ApiKey> apiKeyAll = this.keyListRepository.findAll();
-        Iterator var4 = apiKeyAll.iterator();
 
-        ApiKey key;
-        do {
-            if (!var4.hasNext()) {
-                return null;
-            }
+        if (keyListRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
-            key = (ApiKey)var4.next();
-        } while(!key.getKeyString().equals(apiKey));
+            Log log = new Log();
 
-        List<Currency> outputList = this.listMapper.maptToListDto(list);
-        Log log = new Log();
-        log.setDate(new Date(System.currentTimeMillis()));
-        log.setMethod("POST");
-        log.setQuotation("Exchange currency");
-        log.setUsedApi(this.apiKeyRepository.findByKeyString(apiKey));
-        log.setBody(list.toString());
-        this.logRepository.save(log);
-        return outputList;
+            log.insertValues(
+                    "POST",
+                    "Print list of courser of currencies",
+                    apiKeyRepository.findByKeyString(apiKey),
+                    list.toString(),
+                    HttpStatus.OK);
+            logRepository.save(log);
+
+            return listMapper.maptToListDto(list);
+
+        } else {
+
+            Log log = new Log();
+            log.insertValues(
+                    "GET",
+                    "Print list of courser of currencies",
+                    HttpStatus.UNAUTHORIZED);
+
+            this.logRepository.save(log);
+
+            throw new WrongApiKeyException(apiKey);
+        }
     }
 }

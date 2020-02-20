@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.exchanger.exchanger.model.logs.Log;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +18,7 @@ public class ApiKey {
     private Long id;
 
     @Transient
+    @JsonIgnore
     private int length;
 
     private String keyString;
@@ -29,6 +29,7 @@ public class ApiKey {
             = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     @OneToMany(mappedBy = "usedApi")
+    @JsonIgnore
     private List<Log> logList;
 
     public void generateKey() {
@@ -41,6 +42,6 @@ public class ApiKey {
             key.append(allChars.charAt(character));
         }
 
-        keyString = key.toString();
+        this.keyString = key.toString();
     }
 }

@@ -2,7 +2,7 @@ package pl.exchanger.exchanger.model.logs;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
 import pl.exchanger.exchanger.model.apiKey.ApiKey;
 
 import javax.persistence.*;
@@ -29,5 +29,30 @@ public class Log {
     @ManyToOne
     private ApiKey usedApi;
 
+    private HttpStatus httpStatus;
+
+
+    public void insertValues(String method, String quotation, HttpStatus httpStatus) {
+        this.date = new Date(System.currentTimeMillis());
+        this.method = method;
+        this.quotation = quotation;
+        this.httpStatus = httpStatus;
+    }
+
+    public void insertValues(String method, String quotation, ApiKey usedApi,HttpStatus httpStatus) {
+        this.date = new Date(System.currentTimeMillis());
+        this.method = method;
+        this.quotation = quotation;
+        this.usedApi = usedApi;
+        this.httpStatus = httpStatus;
+    }
+
+    public void insertValues(String method, String quotation, ApiKey usedApi, String body, HttpStatus httpStatus) {
+        this.date = new Date(System.currentTimeMillis());
+        this.method = method;
+        this.quotation = quotation;
+        this.usedApi = usedApi;
+        this.httpStatus =httpStatus;
+    }
 
 }
