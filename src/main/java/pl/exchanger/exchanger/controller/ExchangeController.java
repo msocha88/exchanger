@@ -36,9 +36,6 @@ public class ExchangeController {
     ExchangeMapper exchangeMapper;
 
     @Autowired
-    ApiKeyRepository keyListRepository;
-
-    @Autowired
     LogRepository logRepository;
 
 
@@ -53,14 +50,14 @@ public class ExchangeController {
                 HttpStatus.OK);
         this.logRepository.save(log);
 
-        return keyListRepository.findAll();
+        return apiKeyRepository.findAll();
     }
 
     @GetMapping("/list")
     public List<CurrencyType> getAvailableCurrencyList(@RequestParam String apiKey) {
 
 
-        if (keyListRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
+        if (apiKeyRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
             Log log = new Log();
 
@@ -91,7 +88,7 @@ public class ExchangeController {
     @PostMapping("/exchange")
     public CurrencyExchanger exchangeCurrency(@RequestBody ExchangeRequest request, @RequestParam String apiKey) {
 
-        if (keyListRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
+        if (apiKeyRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
             Log log = new Log();
 
@@ -124,7 +121,7 @@ public class ExchangeController {
     @PostMapping("/courselist")
     public List<Currency> printCourses(@RequestBody List<CurrencyType> list, @RequestParam String apiKey) {
 
-        if (keyListRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
+        if (apiKeyRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
             Log log = new Log();
 
