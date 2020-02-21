@@ -93,8 +93,6 @@ public class ExchangeController {
 
         if (keyListRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
-            CurrencyExchanger exchanger = exchangeMapper.mapToExchangeDto(request);
-
             Log log = new Log();
 
             log.insertValues(
@@ -107,7 +105,7 @@ public class ExchangeController {
 
             logRepository.save(log);
 
-            return exchanger;
+            return exchangeMapper.mapToExchangeDto(request);
 
         } else {
 
