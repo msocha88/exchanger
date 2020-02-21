@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,13 +43,10 @@ public class ExchangeController {
     @GetMapping("/apiKeys")
     public List<ApiKey> getApiKeyList() {
 
-        Log log = new Log();
-
-        log.insertValues(
-                "GET",
+        logRepository.save(new Log(
+                HttpMethod.GET,
                 "Get API key list",
-                HttpStatus.OK);
-        this.logRepository.save(log);
+                HttpStatus.OK));
 
         return apiKeyRepository.findAll();
     }
@@ -59,27 +57,21 @@ public class ExchangeController {
 
         if (apiKeyRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
-            Log log = new Log();
-
-            log.insertValues(
-                    "GET",
+            logRepository.save(new Log(
+                    HttpMethod.GET,
                     "Get available currencyList",
                     apiKeyRepository.findByKeyString(apiKey),
-                    HttpStatus.OK);
+                    HttpStatus.OK));
 
-            this.logRepository.save(log);
 
             return Arrays.asList(CurrencyType.values());
 
         } else {
 
-            Log log = new Log();
-            log.insertValues(
-                    "GET",
+            logRepository.save(new Log(
+                    HttpMethod.GET,
                     "Get available currencyList",
-                    HttpStatus.UNAUTHORIZED);
-
-            this.logRepository.save(log);
+                    HttpStatus.UNAUTHORIZED));
 
             throw new WrongApiKeyException(apiKey);
         }
@@ -90,29 +82,22 @@ public class ExchangeController {
 
         if (apiKeyRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
-            Log log = new Log();
-
-            log.insertValues(
-
-                    "POST",
+            logRepository.save(new Log(
+                    HttpMethod.POST,
                     "Exchange currency",
                     apiKeyRepository.findByKeyString(apiKey),
                     request.toString(),
-                    HttpStatus.OK);
-
-            logRepository.save(log);
+                    HttpStatus.OK));
 
             return exchangeMapper.mapToExchangeDto(request);
 
         } else {
 
-            Log log = new Log();
-            log.insertValues(
-                    "GET",
+            logRepository.save( new Log(
+                    HttpMethod.GET,
                     "Exchange currency",
-                    HttpStatus.UNAUTHORIZED);
+                    HttpStatus.UNAUTHORIZED));
 
-            this.logRepository.save(log);
 
             throw new WrongApiKeyException(apiKey);
         }
@@ -123,27 +108,21 @@ public class ExchangeController {
 
         if (apiKeyRepository.findAll().contains(apiKeyRepository.findByKeyString(apiKey))) {
 
-            Log log = new Log();
-
-            log.insertValues(
-                    "POST",
+            logRepository.save(new Log(
+                    HttpMethod.POST,
                     "Print list of courser of currencies",
                     apiKeyRepository.findByKeyString(apiKey),
                     list.toString(),
-                    HttpStatus.OK);
-            logRepository.save(log);
+                    HttpStatus.OK));
 
             return listMapper.maptToListDto(list);
 
         } else {
 
-            Log log = new Log();
-            log.insertValues(
-                    "GET",
+            logRepository.save(new Log(
+                    HttpMethod.GET,
                     "Print list of courser of currencies",
-                    HttpStatus.UNAUTHORIZED);
-
-            this.logRepository.save(log);
+                    HttpStatus.UNAUTHORIZED));
 
             throw new WrongApiKeyException(apiKey);
         }

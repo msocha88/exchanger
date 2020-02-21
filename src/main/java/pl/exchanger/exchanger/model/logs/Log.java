@@ -3,12 +3,14 @@ package pl.exchanger.exchanger.model.logs;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import pl.exchanger.exchanger.model.apiKey.ApiKey;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
+
 
 
 @Entity
@@ -21,7 +23,7 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String method;
+    private HttpMethod method;
 
     private Date date;
 
@@ -37,7 +39,7 @@ public class Log {
     private HttpStatus httpStatus;
 
 
-    public void insertValues(String method, String quotation, HttpStatus httpStatus) {
+    public  Log(HttpMethod method, String quotation, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
         this.time = new Time(System.currentTimeMillis());
         this.method = method;
@@ -45,7 +47,7 @@ public class Log {
         this.httpStatus = httpStatus;
     }
 
-    public void insertValues(String method, String quotation, ApiKey usedApi, HttpStatus httpStatus) {
+    public  Log(HttpMethod method, String quotation, ApiKey usedApi, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
         this.time = new Time(System.currentTimeMillis());
         this.method = method;
@@ -54,7 +56,7 @@ public class Log {
         this.httpStatus = httpStatus;
     }
 
-    public void insertValues(String method, String quotation, ApiKey usedApi, String body, HttpStatus httpStatus) {
+    public  Log(HttpMethod method, String quotation, ApiKey usedApi, String body, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
         this.time = new Time(System.currentTimeMillis());
         this.method = method;
