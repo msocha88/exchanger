@@ -14,7 +14,7 @@ import pl.exchanger.exchanger.model.currency.ExchangeRequest;
 public class ExchangeMapper {
 
 
-    public CurrencyExchanger mapToExchangeDto(ExchangeRequest exchangeRequest) {
+    public ExchangeDto mapToExchangeDto(ExchangeRequest exchangeRequest) {
 
         ExchangeDto exchangeDto = new ExchangeDto();
 
@@ -37,7 +37,7 @@ public class ExchangeMapper {
 
         exchangeDto.setExchanger(exchanger);
 
-        return exchangeDto.getExchanger();
+        return exchangeDto;
     }
 
 

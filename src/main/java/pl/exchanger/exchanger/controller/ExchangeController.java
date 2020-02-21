@@ -63,7 +63,6 @@ public class ExchangeController {
                     apiKeyRepository.findByKeyString(apiKey),
                     HttpStatus.OK));
 
-
             return Arrays.asList(CurrencyType.values());
 
         } else {
@@ -89,15 +88,14 @@ public class ExchangeController {
                     request.toString(),
                     HttpStatus.OK));
 
-            return exchangeMapper.mapToExchangeDto(request);
+            return exchangeMapper.mapToExchangeDto(request).getExchanger();
 
         } else {
 
-            logRepository.save( new Log(
+            logRepository.save(new Log(
                     HttpMethod.GET,
                     "Exchange currency",
                     HttpStatus.UNAUTHORIZED));
-
 
             throw new WrongApiKeyException(apiKey);
         }
@@ -115,7 +113,7 @@ public class ExchangeController {
                     list.toString(),
                     HttpStatus.OK));
 
-            return listMapper.maptToListDto(list);
+            return listMapper.maptToListDto(list).getCurrencyList();
 
         } else {
 

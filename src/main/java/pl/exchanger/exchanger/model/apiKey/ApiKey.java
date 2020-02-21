@@ -25,7 +25,7 @@ public class ApiKey {
 
     @Transient
     @JsonIgnore
-    private final String allChars
+    protected final String allChars
             = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     @OneToMany(mappedBy = "usedApi")

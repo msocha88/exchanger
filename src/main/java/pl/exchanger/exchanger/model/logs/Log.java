@@ -11,8 +11,6 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 
-
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,6 +20,8 @@ public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private HttpStatus httpStatus;
 
     private HttpMethod method;
 
@@ -35,8 +35,6 @@ public class Log {
 
     @ManyToOne
     private ApiKey usedApi;
-
-    private HttpStatus httpStatus;
 
 
     public  Log(HttpMethod method, String quotation, HttpStatus httpStatus) {

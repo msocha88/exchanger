@@ -12,7 +12,7 @@ public class ListMapper {
 
 
 
-    public List<Currency> maptToListDto(List<CurrencyType> currencyTypeList) {
+    public ListDto maptToListDto(List<CurrencyType> currencyTypeList) {
 
         ListDto listDto = new ListDto();
 
@@ -23,7 +23,7 @@ public class ListMapper {
             currency.downloadCourse();
             listDto.getCurrencyList().add(currency);
         }
-        return listDto.getCurrencyList();
+        return listDto;
 
     }
 }
