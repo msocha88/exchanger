@@ -24,7 +24,7 @@ import pl.exchanger.exchanger.model.logs.Log;
 import pl.exchanger.exchanger.repository.ApiKeyRepository;
 import pl.exchanger.exchanger.repository.LogRepository;
 
-@RequestMapping({"/api/"})
+@RequestMapping("/api/")
 @RestController
 public class ExchangeController {
     @Autowired
