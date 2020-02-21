@@ -1,5 +1,6 @@
 package pl.exchanger.exchanger.model.logs;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,12 +9,12 @@ import pl.exchanger.exchanger.model.apiKey.ApiKey;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
 
 
 @Entity
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Log {
 
     @Id
