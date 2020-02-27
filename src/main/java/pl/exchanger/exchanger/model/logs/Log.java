@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import pl.exchanger.exchanger.model.apiKey.ApiKey;
+
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -33,9 +33,12 @@ public class Log {
 
     private String body;
 
-    @ManyToOne
-    private ApiKey usedApi;
 
+    public  Log(String error) {
+        this.date = new Date(System.currentTimeMillis());
+        this.time = new Time(System.currentTimeMillis());
+        this.body = error;
+    }
 
     public  Log(HttpMethod method, String quotation, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
@@ -45,21 +48,12 @@ public class Log {
         this.httpStatus = httpStatus;
     }
 
-    public  Log(HttpMethod method, String quotation, ApiKey usedApi, HttpStatus httpStatus) {
+    public  Log(HttpMethod method, String quotation, String body, HttpStatus httpStatus) {
         this.date = new Date(System.currentTimeMillis());
         this.time = new Time(System.currentTimeMillis());
         this.method = method;
         this.quotation = quotation;
-        this.usedApi = usedApi;
-        this.httpStatus = httpStatus;
-    }
-
-    public  Log(HttpMethod method, String quotation, ApiKey usedApi, String body, HttpStatus httpStatus) {
-        this.date = new Date(System.currentTimeMillis());
-        this.time = new Time(System.currentTimeMillis());
-        this.method = method;
-        this.quotation = quotation;
-        this.usedApi = usedApi;
+        this.body = body;
         this.httpStatus = httpStatus;
     }
 

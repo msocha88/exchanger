@@ -2,8 +2,8 @@ package pl.exchanger.exchanger.exceptions;
 
 public class WrongApiKeyException extends RuntimeException {
 
-    public WrongApiKeyException(String apiKey) {
+    public WrongApiKeyException() {
 
-        super("API key: " + apiKey + " is invalid. Please enter proper API key.");
+        super("Your API Key is invalid. Please enter proper API Key.");
     }
 }
