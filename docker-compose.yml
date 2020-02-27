@@ -1,8 +1,8 @@
-version: '3.7'                          # wersja docker compose
-services:                             # serwisy jakie sa zarządzane przez bierzący docker compose
+version: '3.7'                         # wersja docker compose
+services:                              # serwisy jakie sa zarządzane przez bierzący docker compose
 
   db:
-    container_name: db       # nazwa dla kontenera
+    container_name: db                # nazwa dla kontenera
     image: mysql                      # obraz bazy danych -> https://hub.docker.com/_/mysql
     environment:                      # zmienne srodowiskowe zgodne z dokumentacją -> https://hub.docker.com/_/mysql
       MYSQL_PASSWORD: password
@@ -17,8 +17,8 @@ services:                             # serwisy jakie sa zarządzane przez bierz
       - ./mysql-data:/var/lib/mysql
 
 
-  exchanger:                                # nazwa serwisu (dowolna, unikalna)
-    build: ./                         # sciezka do pliku Dockerfile dla tego kontenera
+  exchanger:                         # nazwa serwisu (dowolna, unikalna)
+    build: ./                        # sciezka do pliku Dockerfile dla tego kontenera
     ports:
       - "8080:8080"
     depends_on:                       # zaleznosc - do uruchomienia tego serwisu wymagane wecześniejsze uruchomienie serwisu databases

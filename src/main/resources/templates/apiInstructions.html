@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Instrukcja Api</title>
@@ -10,34 +10,89 @@
 <ul>
 
     <li><h1> Pobranie klucza Api</h1></li>
-    <h3>Uwaga!! Pobranie klucza jest konieczne aby wykonać działania na api</h3>
+    <h3> Ścieżka <code>/api/*</code> zabezpieczona jest kluczem JSON Web Token.</h3>
 
-    <h4>Aby pobrać listę dostępnych kluczy kliknij <a href="/api/apiKeys">pobierz!</a></h4>
+    <h3>Hasło do logowania to <b>Jupikajej</b></h3>
 
+    <p>Aby pobrać klucz wyślij żądanie <code>POST</code> w Body przekazując dane logowania:<br>
+    <p><code>
+        {<br>
+        "login":"user"<br>
+        "password":"Jupikajej"<br>
+        }<br>
+    </code></p>
+    na adres: localhost:8080/logIn<br>
+
+    <h3>Wszystkie poniższe żądania wysyłaj z autentykacją "Bearer Token" oraz otrzymanym kluczem</h3>
+    <h3>Klucz wygasa po 10 minutach</h3>
+
+    <hr>
     <li><h2>Pobranie listy dostępnych walut:</h2>
-        <h4>Aby pobrac listę dostępnych walut wyślij żądanie <code>GET</code> z parametrem <code>apiKey=</code>na adres
-            <a href="/api/list?apiKey=">http://localhost:8080.com/api/list?apiKey=</a></h4>
+        <h4>Aby pobrac listę dostępnych walut wyślij żądanie <code>GET</code> na adres
+            <code>http://localhost:8080.com/api/list</code> z pobranym wcześniej tokenem JWT</h4>
     </li>
+
+    <h3>Curl:</h3>
+    <h4>curl --location --request GET 'localhost:8080/api/list' \<br>
+        --header 'Content-Type: application/json' \<br>
+        --header 'Authorization: Bearer [JWT]' \<br>
+        --data-raw ''</h4>
+
+    <hr>
     <li><h2>Przeliczenie jednej waluty na inną</h2>
-        <h4>Aby przeliczyć walutę wyślij metodą <code>POST</code> żądanie w formacie:<br><br>
-            {"amount":[ilość],<br>
-            "sell":[waluta sprzedawana]}<br>
-            "buy":[waluta kupowana],<br><br>
-            np.
-            { "amount":"100",
-            "sell":"GBP",
-            "buy":"EUR"
-            }<br><br>
-            na adres <code>http://localhost:8080/api/exchange</code>
+        <h4>Aby przeliczyć walutę wyślij metodą <code>POST</code> żądanie w formacie:<br><br></h4>
+        {<br>"amount":[ilość],<br>
+        "sell":[waluta sprzedawana],<br>
+        "buy":[waluta kupowana]<br>
+        }<br>
+
+        np.
+        { "amount":"100",
+        "sell":"GBP",
+        "buy":"EUR"
+        }<br><br>
+        <h4>na adres <code>http://localhost:8080/api/exchange</code>
         </h4>
     </li>
+    <h3>Curl:</h3>
+    <h4>curl --location --request POST 'localhost:8080/api/exchange' \<br>
+        --header 'Content-Type: application/json' \<br>
+        --header 'Authorization: Bearer [JWT]' \<br>
+        --data-raw '{<br><br>
+
+        "amount":"100",<br><br>
+
+        "sell":"EUR",<br><br>
+
+        "buy":"PLN"<br><br>
+        }'</h4>
+
+
+
+    <hr>
     <li>
         <h2>Porbanie aktualnych kursów dla listy walut</h2>
         <h4>Aby pobrać aktualne kursy walut wyślij tablicę walut metodą <code>POST</code> na adres<br>
-          <code>http://localhost:8080/api/courselist?apiKey=</code> z parametrem <code>apiKey=</code>
+            <code>http://localhost:8080/api/courselist</code>
         </h4>
+        <h3>Curl:</h3>
+        <h4>curl --location --request POST 'localhost:8080/api/courselist' \<br>
+            --header 'Content-Type: application/json' \<br>
+            --header 'Authorization: Bearer [JWT]' \<br>
+            --data-raw '["USD","PLN","CHF","GBP","CZK","DKK"]'</h4>
+
 
     </li>
+    <hr>
+    <li>
+        <h2>Logi</h2>
+        <h3>Aby sprawdzićistniejące logi wyślij żądanie <code>GET</code> na adres<code>
+            <a href="/logs/all">localhost:8080/logs/all</a></code>
+        </h3>
+    </li>
 </ul>
+<h3 align="center">
+    <a href="/"><<< Powrót</a></h3>
+
 </body>
 </html>

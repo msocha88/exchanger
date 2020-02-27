@@ -54,6 +54,7 @@ public class ExchangeController {
         logRepository.save(new Log(
                 HttpMethod.POST,
                 "Exchange currency",
+                request.toString(),
                 HttpStatus.OK));
 
         return exchangeMapper.mapToExchangeDto(request).getExchanger();
@@ -61,7 +62,7 @@ public class ExchangeController {
     }
 
     @PostMapping("/courselist")
-    public List<Currency> printCourses(@RequestBody List<CurrencyType> list, @RequestParam String apiKey) {
+    public List<Currency> printCourses(@RequestBody List<CurrencyType> list) {
 
         logRepository.save(new Log(
                 HttpMethod.POST,

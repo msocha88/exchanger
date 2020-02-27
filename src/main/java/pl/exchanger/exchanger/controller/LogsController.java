@@ -16,7 +16,7 @@ public class LogsController {
     @Autowired
     LogRepository logRepository;
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<Log> printAllLogs() {
         return logRepository.findAll();
     }

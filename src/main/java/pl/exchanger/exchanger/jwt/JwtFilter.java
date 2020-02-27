@@ -2,10 +2,7 @@ package pl.exchanger.exchanger.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import pl.exchanger.exchanger.exceptions.WrongApiKeyException;
-import pl.exchanger.exchanger.model.logs.Log;
-import pl.exchanger.exchanger.repository.LogRepository;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,19 +13,18 @@ import java.io.IOException;
 
 public class JwtFilter implements javax.servlet.Filter {
 
-    @Autowired
-    LogRepository logRepository;
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String header = httpServletRequest.getHeader("authorization");
 
+        if (httpServletRequest == null || !header.startsWith("Bearer ")) {
 
-        if (httpServletRequest == null || header.startsWith("Bearer ")) {
             throw new ServletException("Wrong or empty Header");
+
         } else {
+
             try {
 
                 String token = header.substring(7);
@@ -41,6 +37,5 @@ public class JwtFilter implements javax.servlet.Filter {
             }
         }
         chain.doFilter(request,response);
-
     }
 }
