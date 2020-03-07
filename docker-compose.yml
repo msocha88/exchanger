@@ -17,7 +17,7 @@ services:                              # serwisy jakie sa zarządzane przez bier
       - ./mysql-data:/var/lib/mysql
 
 
-  exchanger:                         # nazwa serwisu (dowolna, unikalna)
+  exchanger:                         # nazwa serwisu 
     build: ./                        # sciezka do pliku Dockerfile dla tego kontenera
     ports:
       - "8080:8080"
